@@ -32,8 +32,15 @@ type InfluxServer
             uri =  URI(uri.scheme, uri.host, 8086, uri.path)
         end
 
+        if !isa(username, Nullable)
+            username = Nullable(username)
+        end
+        if !isa(password, Nullable)
+            password = Nulllable(password)
+        end
+
         # URIs are the new hotness
-        return new(uri, Nullable(username), Nullable(password))
+        return new(uri, username, password)
     end
 end
 
