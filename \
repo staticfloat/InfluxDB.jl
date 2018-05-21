@@ -61,15 +61,16 @@ function query_series( server::InfluxServer, db::AbstractString, name::AbstractS
     authenticate!(server, query)
     response = get("$(server.addr)query"; query=query)
     if response.status != 200
-      error(transcode(String, response.data))
+      println(bytestring)  
+      error(bytestring(response.data))
     end
     println("The bytestring: ")
-    println(transcode(String, response.data))
+    println(response.data)
     # Grab result, turn it into a dataframe
-    series_dict = JSON.parse(transcode(String, response.data))["results"][1]["series"][1]
+    series_dict = JSON.parse(bytestring(response.data))["results"][1]["series"][1]
     df = DataFrame()
     for name_idx in 1:length(series_dict["columns"])
-       df[Symbol(series_dict["columns"][name_idx])] = [x[name_idx] for x in series_dict["values"]]
+       df[symbol(series_dict["columns"][name_idx])] = [x[name_idx] for x in series_dict["values"]]
     end
     return df
 end
@@ -81,7 +82,7 @@ function create_db(server::InfluxServer, db::AbstractString)
     authenticate!(server, query)
     response = get("$(server.addr)query"; query=query)
     if response.status != 200
-        error(transcode(String, response.data))
+        error(bytestring(response.data))
     end
 end
 
@@ -110,7 +111,7 @@ function write( server::InfluxServer, db::AbstractString, name::AbstractString, 
     authenticate!(server, query)
     response = post("$(server.addr)write"; query=query, data=datastr)
     if response.status != 204
-        error(transcode(String, response.data))
+        error(bytestring(response.data))
     end
 end
 
