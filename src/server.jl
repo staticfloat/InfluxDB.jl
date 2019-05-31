@@ -1,6 +1,9 @@
 using JSON, HTTP
 using HTTP.URIs: URI
 import HTTP: get
+import Base: write
+
+export write, query
 
 """
     InfluxServer

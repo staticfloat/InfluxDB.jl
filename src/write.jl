@@ -22,13 +22,16 @@ function payload(m::Measurement)
     return String(take!(buff))
 end
 
+writify(x) = string(x)
+writify(x::AbstractString) = string("\"", x, "\"")
+
 function payload!(io::IO, m::Measurement)
     write(io, m.name)
     if !isempty(m.tags)
         join(io, [",$(k)=$(v)" for (k, v) in m.tags])
     end
     write(io, " ")
-    join(io, ["$(k)=$(string(v))" for (k, v) in m.fields], ",")
+    join(io, ["$(k)=$(writify(v))" for (k, v) in m.fields], ",")
     write(io, " ")
     write(io, string(round(Int64, m.timestamp*1e9)))
 end
