@@ -70,7 +70,7 @@ function query(server::InfluxServer, query_data::Dict; type::Symbol = :get)
     function series_df(series_dict)
         df = DataFrame()
         for name_idx in 1:length(series_dict["columns"])
-            df[Symbol(series_dict["columns"][name_idx])] = [x[name_idx] for x in series_dict["values"]]
+            df[!, Symbol(series_dict["columns"][name_idx])] = [x[name_idx] for x in series_dict["values"]]
         end
         return df
     end
