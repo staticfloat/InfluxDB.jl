@@ -40,8 +40,8 @@ end
 # Add authentication to a query dict, if we need to
 function authenticate!(server::InfluxServer, query::Dict)
     if server.username != nothing && server.password != nothing
-        query["u"] = server.username.value
-        query["p"] = server.password.value
+        query["u"] = server.username
+        query["p"] = server.password
     end
 end
 
