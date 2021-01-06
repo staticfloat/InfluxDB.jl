@@ -37,5 +37,5 @@
         ),
     )[1]
     @test size(h2o_feet_data) == (13, 3)
-    @test mean(h2o_feet_data[:water_level]) > 7.0
+    @test mean(h2o_feet_data[!, :water_level]) > 7.0
 end
