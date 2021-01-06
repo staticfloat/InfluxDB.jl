@@ -28,8 +28,8 @@ struct InfluxServer
         end
 
         # If we didn't get an explicit port, default to 8086
-        if uri.port == 0
-            uri =  URI(uri.scheme, uri.host, 8086, uri.path)
+        if isempty(uri.port)
+            uri = Base.merge(uri, port=8086)
         end
 
         # URIs are the new hotness
