@@ -3,7 +3,7 @@
 
     create_database(server, "write_test")
     dbs, = list_databases(server)
-    @test "write_test" in dbs[:name]
+    @test "write_test" in dbs[!, :name]
 
     t = time()
     measurements = [

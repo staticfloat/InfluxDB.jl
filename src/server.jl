@@ -21,15 +21,14 @@ struct InfluxServer
     # Build a server object that we can use in queries from now on
     function InfluxServer(address::AbstractString; username=nothing, password=nothing)
         # If there wasn't a schema defined (we only recognize http/https), default to http
-        if match(r"^https?://", address) == nothing
-            uri = URI("http://$address")
-        else
-            uri = URI(address)
+        if isnothing(match(r"^https?://", address))
+            address = "http://$address"
         end
+        uri = URI(address)
 
         # If we didn't get an explicit port, default to 8086
-        if uri.port == 0
-            uri =  URI(uri.scheme, uri.host, 8086, uri.path)
+        if isempty(uri.port)
+            uri = Base.merge(uri, port=8086)
         end
 
         # URIs are the new hotness
@@ -70,7 +69,8 @@ function query(server::InfluxServer, query_data::Dict; type::Symbol = :get)
     function series_df(series_dict)
         df = DataFrame()
         for name_idx in 1:length(series_dict["columns"])
-            df[Symbol(series_dict["columns"][name_idx])] = [x[name_idx] for x in series_dict["values"]]
+            col = Symbol(series_dict["columns"][name_idx])
+            df[!, col] = [x[name_idx] for x in series_dict["values"]]
         end
         return df
     end
