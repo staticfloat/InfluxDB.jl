@@ -6,7 +6,7 @@
     create_database(server, "escape_test")
     
     @testset "Escaping measurement" begin
-        #@test_throws ErrorException escape_measurement("\n")
+        @test_throws ErrorException escape_measurement("\n")
         @test_throws ErrorException escape_measurement("a\\")
 
         tests = [
