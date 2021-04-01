@@ -13,8 +13,9 @@ try
     include("querying.jl")
     include("databases.jl")
     include("writing.jl")
+    include("escaping.jl")
 finally
-    if container_id != nothing
+    if container_id !== nothing
         @info("Stopping docker influxdb container $(container_id)")
         run(`docker stop $(container_id)`)
     end

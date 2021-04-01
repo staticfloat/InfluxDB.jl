@@ -1,11 +1,11 @@
-@testset "Databases" begin
+@testset "Writing" begin
     server = InfluxServer("http://localhost:8086")
 
     create_database(server, "write_test")
     dbs, = list_databases(server)
     @test "write_test" in dbs[!, :name]
 
-    t = time()
+    t = 2000
     measurements = [
         Measurement(
             "performance",
